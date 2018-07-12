@@ -20,26 +20,22 @@ import (
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/solcates/whereami/pkg/system"
+	"github.com/solcates/whereami/pkg/docker"
 	"log"
 )
 
 var cfgFile string
+var Version = "0.1.0"
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "whereami",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Determine what kind of system you are running in",
+	Long:  `whereami is a simple utility to discover what kind of system it is running in`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		sp := system.DockerDetector{}
+		sp := docker.NewDockerDetector()
 		if yes, err := sp.InContainer(); err != nil {
 			log.Fatal(err)
 		} else {
